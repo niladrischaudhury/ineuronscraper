@@ -246,7 +246,8 @@ def setupSQLConn():
     #mydb = conn.connect(host='localhost', user='root', passwd='MySql@123')
 
     # AWS
-    mydb = conn.connect(host='ineurondata.caxhx34dldru.us-east-1.rds.amazonaws.com', user='admin', passwd='MySql1234')
+    mydb = conn.connect(host='ineurondatabase.caxhx34dldru.us-east-1.rds.amazonaws.com', user ='admin', passwd = 'mysql1234')
+
     cursor = mydb.cursor()
     cursor.execute("show databases")
     dblist = cursor.fetchall()
@@ -315,7 +316,8 @@ def getConn():
     #mydb = conn.connect(host='localhost', user='root', passwd='MySql@123')
 
     # AWS
-    mydb = conn.connect(host='ineurondata.caxhx34dldru.us-east-1.rds.amazonaws.com', user='admin', passwd='MySql1234')
+    mydb = conn.connect(host='ineurondatabase.caxhx34dldru.us-east-1.rds.amazonaws.com', user ='admin', passwd = 'mysql1234')
+
     return mydb
 
 
