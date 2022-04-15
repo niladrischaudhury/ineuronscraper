@@ -16,7 +16,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])  # route to display the home page
 @cross_origin()
 def homePage():
-    setupSQLConn()
+    #setupSQLConn()
     return render_template("index.html")
 
 
@@ -86,7 +86,7 @@ def getCourses():
             driver.quit()
 
             # Load data into Database
-            loadMainCourseTable(main_courses)
+            #loadMainCourseTable(main_courses)
 
             return render_template("maincourses.html", mainCourses=main_courses)
         except Exception as e:
@@ -133,7 +133,7 @@ def getSubtopics():
                 st.add_subTopicCourse(c1)
 
             # Load data into Database
-            loadSubtopicTable(st)
+            #loadSubtopicTable(st)
 
             return render_template("subtopics.html", subtopic=st)
         except Exception as e:
@@ -229,11 +229,11 @@ def getCourseDetails():
                 "class": "InstructorDetails_mentor__2hmG8 InstructorDetails_card__14MoH InstructorDetails_flex__2ePsQ card flex"})
             for faculty in faculties:
                 f1 = Faculty(faculty.find('h5').text, faculty.find('p').text)
-                loadFacultyTable(f1)
+                #loadFacultyTable(f1)
                 course.add_courseFaculties(f1)
 
-            loadCurriculumTable(course)
-            loadCourseTable(course)
+            #loadCurriculumTable(course)
+            #loadCourseTable(course)
 
             return render_template("course.html", course=course)
         except Exception as e:
