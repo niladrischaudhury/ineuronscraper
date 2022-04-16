@@ -12,7 +12,8 @@ import logging
 
 application = Flask(__name__)
 
-logging.basicConfig(filename='appLog.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
+
+# logging.basicConfig(filename='appLog.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
 
 # Faculty class
@@ -22,8 +23,8 @@ class Faculty:
         self.profile = profile
 
     def printFaculty(self):
-        logging.info('Faculty Name:', self.name)
-        logging.info('Faculty Profile:', self.profile)
+        print('Faculty Name:', self.name)
+        print('Faculty Profile:', self.profile)
 
 
 # Curriculum class
@@ -33,8 +34,8 @@ class Curriculum:
         self.curriculumListDetails = curriculumListDetails
 
     def printCurriculum(self):
-        logging.info('Curriculum Name:', self.name)
-        logging.info('Curriculum Details:', self.curriculumListDetails)
+        print('Curriculum Name:', self.name)
+        print('Curriculum Details:', self.curriculumListDetails)
 
 
 # Course Class
@@ -80,18 +81,18 @@ class Course:
         return faculties
 
     def printCourse(self):
-        logging.info('Course name:', self.courseName)
-        logging.info('Course desc:', self.courseDesc)
-        logging.info('Course URL:', self.courseURL)
-        logging.info('Course learnings:', self.courseLearnings)
-        logging.info('Course requirements:', self.courseRequirements)
-        logging.info('Course features:', self.courseFeatures)
-        logging.info('Course curriculums:')
+        print('Course name:', self.courseName)
+        print('Course desc:', self.courseDesc)
+        print('Course URL:', self.courseURL)
+        print('Course learnings:', self.courseLearnings)
+        print('Course requirements:', self.courseRequirements)
+        print('Course features:', self.courseFeatures)
+        print('Course curriculums:')
         if isinstance(self.courseCurriculums, list):
             for i in self.courseCurriculums:
                 if isinstance(i, Curriculum):
                     i.printCurriculum()
-        logging.info('Course faculties:')
+        print('Course faculties:')
         if isinstance(self.courseFaculties, list):
             for i in self.courseFaculties:
                 if isinstance(i, Faculty):
@@ -109,8 +110,8 @@ class SubTopic:
         self.subTopicCourses.append(course)
 
     def printSubTopic(self):
-        logging.info("SubTopic Name:", self.subTopicName)
-        logging.info("SubTopic URL:", self.subTopicURL)
+        print("SubTopic Name:", self.subTopicName)
+        print("SubTopic URL:", self.subTopicURL)
         if isinstance(self.subTopicCourses, list):
             for i in self.subTopicCourses:
                 if isinstance(i, Course):
@@ -130,7 +131,7 @@ class MainCourse:
         return self.subTopics
 
     def printMainCourse(self):
-        logging.info("CourseName:", self.courseName)
+        print("CourseName:", self.courseName)
         if isinstance(self.subTopics, list):
             for i in self.subTopics:
                 if isinstance(i, SubTopic):
@@ -140,8 +141,8 @@ class MainCourse:
 @application.route('/', methods=['GET'])  # route to display the home page
 @cross_origin()
 def homePage():
-    logging.info("Starting home page")
-    setupSQLConn()
+    print("Starting home page")
+    # setupSQLConn()
     return render_template("index.html")
 
 
@@ -173,7 +174,7 @@ def getCourses():
                 main_courses.append(mc1)
 
             # Get all MainCourse details
-            logging.info("Retrieved Main Course list from ", iNeuronHome)
+            print("Retrieved Main Course list from ", iNeuronHome)
             for i in main_courses:
                 i.printMainCourse()
 
@@ -211,12 +212,12 @@ def getCourses():
             driver.quit()
 
             # Load data into Database
-            logging.info("Going to insert courses into Database")
-            loadMainCourseTable(main_courses)
+            print("Going to insert courses into Database")
+            # loadMainCourseTable(main_courses)
 
             return render_template("maincourses.html", mainCourses=main_courses)
         except Exception as e:
-            logging.error('The Exception message is: ', e)
+            print('The Exception message is: ', e)
             return 'Exception occured'
 
 
@@ -228,7 +229,7 @@ def getSubtopics():
             stName = request.form.get("subTopicName")
             stURL = request.form.get("subTopicURL")
             st = SubTopic(stName, stURL)
-            logging.info("Going to get the details of SubTopic:", st.printSubTopic())
+            print("Going to get the details of SubTopic:", st.printSubTopic())
 
             # Scrape Sub Topic Items
             chrome_options = Options()
@@ -249,25 +250,25 @@ def getSubtopics():
             driver.quit()
 
             course_num = int(len(sub_topic_html.findAll("h5", {"class": "Course_course-title__2rA2S"})) / 2)
-            logging.info("Total number of courses available for this SubTopic is:", course_num)
+            print("Total number of courses available for this SubTopic is:", course_num)
 
             for i in range(course_num):
                 course_name = sub_topic_html.findAll("h5", {"class": "Course_course-title__2rA2S"})[i].text
                 course_url = (
                         st.subTopicURL[0:26] + sub_topic_html.findAll("div", {"class": "Course_right-area__1XUfi"})[
                     i].a.get('href'))
-                logging.info('Course Name:', course_name)
-                logging.info('Course URL:', course_url)
+                print('Course Name:', course_name)
+                print('Course URL:', course_url)
                 c1 = Course(course_name, course_url)
                 st.add_subTopicCourse(c1)
 
             # Load data into Database
-            logging.info("Going to insert sub topics into Database")
-            loadSubtopicTable(st)
+            print("Going to insert sub topics into Database")
+            # loadSubtopicTable(st)
 
             return render_template("subtopics.html", subtopic=st)
         except Exception as e:
-            logging.error('The Exception message is: ', e)
+            print('The Exception message is: ', e)
             return 'Exception occured'
 
 
@@ -278,7 +279,7 @@ def getCourseDetails():
             course_name = request.form.get("courseName")
             course_url = request.form.get("courseURL")
             course = Course(course_name, course_url)
-            logging.info("Going to get the details of Course:", course.printCourse())
+            print("Going to get the details of Course:", course.printCourse())
 
             # Scrape Course Page details
             chrome_options = Options()
@@ -310,7 +311,7 @@ def getCourseDetails():
                             course_html.findAll("div", {"class": "CourseLearning_card__WxYAo card"})[0].findAll("li")[
                                 ln].text)
             except IndexError:
-                logging.error("IndexError in course Learnings")
+                print("IndexError in course Learnings")
                 pass
 
             # Set Course Requirements
@@ -324,7 +325,7 @@ def getCourseDetails():
                         course.add_courseRequirements(course_html.findAll("div", {
                             "class": "CourseRequirement_card__3g7zR requirements card"})[0].findAll("li")[rn].text)
             except IndexError:
-                logging.error("IndexError in course Requirements")
+                print("IndexError in course Requirements")
                 pass
 
             # Set Course Features
@@ -338,14 +339,14 @@ def getCourseDetails():
                             course_html.findAll("div", {"class": "CoursePrice_course-features__2qcJp"})[0].findAll(
                                 "li")[ft].text)
             except IndexError:
-                logging.error("IndexError in course Features")
+                print("IndexError in course Features")
                 pass
 
             # Set Course Curriculums
             course.courseCurriculums = []
             curriculums = course_html.findAll("div", {
                 "class": "CurriculumAndProjects_curriculum-accordion__2pppc CurriculumAndProjects_card__7HqQx card"})
-            logging.info("Total number of curriculums found:", len(curriculums))
+            print("Total number of curriculums found:", len(curriculums))
             for curriculum in curriculums:
                 cname = curriculum.findAll("div", {
                     "class": "CurriculumAndProjects_accordion-header__3ALRY CurriculumAndProjects_flex__1-ljx flex"})[
@@ -357,7 +358,7 @@ def getCourseDetails():
                     itemDetails.append(details.text)
                 c1 = Curriculum(cname, itemDetails)
                 course.add_courseCurriculums(c1)
-                logging.info("Course Curriculums:", c1.printCurriculum())
+                print("Course Curriculums:", c1.printCurriculum())
 
             # Set Course Faculty details
             course.courseFaculties = []
@@ -365,84 +366,84 @@ def getCourseDetails():
                 "class": "InstructorDetails_mentor__2hmG8 InstructorDetails_card__14MoH InstructorDetails_flex__2ePsQ card flex"})
             for faculty in faculties:
                 f1 = Faculty(faculty.find('h5').text, faculty.find('p').text)
-                logging.info("Faculty details:", f1.printFaculty())
-                logging.info("Going to insert faculty details into Database")
-                loadFacultyTable(f1)
+                print("Faculty details:", f1.printFaculty())
+                print("Going to insert faculty details into Database")
+                # loadFacultyTable(f1)
                 course.add_courseFaculties(f1)
 
-            logging.info("Going to insert Curriculum details into Database:", course.printCourse())
-            loadCurriculumTable(course)
+            print("Going to insert Curriculum details into Database:", course.printCourse())
+            # loadCurriculumTable(course)
 
-            logging.info("Going to insert Course details into Database:", course.printCourse())
-            loadCourseTable(course)
+            print("Going to insert Course details into Database:", course.printCourse())
+            # loadCourseTable(course)
 
             return render_template("course.html", course=course)
         except Exception as e:
-            logging.error('The Exception message is: ', e)
+            print('The Exception message is: ', e)
             return 'Exception occured'
 
 
 def setupSQLConn():
-    logging.info("Setting up SQL Connection")
+    print("Setting up SQL Connection")
     mydb = getConn()
     cursor = mydb.cursor()
     cursor.execute("show databases")
     dblist = cursor.fetchall()
-    logging.info("Available Databases:", dblist)
+    print("Available Databases:", dblist)
     if (any('ineurondata' in i for i in dblist)):
-        logging.info("ineurondata is present")
+        print("ineurondata is present")
         pass
     else:
-        logging.info("Creating ineurondata database")
+        print("Creating ineurondata database")
         cursor.execute("create database iNeuronData")
 
     cursor.execute('use iNeuronData')
     cursor.execute('show tables')
     tableList = cursor.fetchall()
-    logging.info("Available Tables in ineurondata Database:", tableList)
+    print("Available Tables in ineurondata Database:", tableList)
 
     # mastercourse table
     if (any('mastercourse' in i for i in tableList)):
-        logging.info("mastercourse table is present")
+        print("mastercourse table is present")
         pass
     else:
-        logging.info("Creating mastercourse table in iNeuronData database")
+        print("Creating mastercourse table in iNeuronData database")
         query = "create table iNeuronData.mastercourse(mastercoursename varchar(100), subtopicname VARCHAR(100), subtopicurl VARCHAR(150))"
         cursor.execute(query)
 
     # subtopic table
     if (any('subtopic' in i for i in tableList)):
-        logging.info("subtopic table is present")
+        print("subtopic table is present")
         pass
     else:
-        logging.info("Creating subtopic table in iNeuronData database")
+        print("Creating subtopic table in iNeuronData database")
         query = "create table iNeuronData.subtopic(subtopicname VARCHAR(100), coursename VARCHAR(100), courseurl VARCHAR(150))"
         cursor.execute(query)
 
     # course table
     if (any('course' in i for i in tableList)):
-        logging.info("course table is present")
+        print("course table is present")
         pass
     else:
-        logging.info("Creating course table in iNeuronData database")
+        print("Creating course table in iNeuronData database")
         query = "create table iNeuronData.course(coursename VARCHAR(100), coursedesc VARCHAR(1000), courselearnings VARCHAR(1000), courserequirements VARCHAR(1000), courseFeatures TEXT, coursecurriculumname TEXT, coursefacultyname VARCHAR(500))"
         cursor.execute(query)
 
     # curriculum table
     if (any('curriculum' in i for i in tableList)):
-        logging.info("curriculum table is present")
+        print("curriculum table is present")
         pass
     else:
-        logging.info("Creating curriculum table in iNeuronData database")
+        print("Creating curriculum table in iNeuronData database")
         query = "create table iNeuronData.curriculum(coursename VARCHAR(100), coursecurriculumname VARCHAR(100), coursecurriculumdetails TEXT)"
         cursor.execute(query)
 
     # faculty table
     if (any('faculty' in i for i in tableList)):
-        logging.info("faculty table is present")
+        print("faculty table is present")
         pass
     else:
-        logging.info("Creating faculty table in iNeuronData database")
+        print("Creating faculty table in iNeuronData database")
         query = "create table iNeuronData.faculty(coursefacultyname VARCHAR(100), coursefacultyprofile VARCHAR(1000))"
         cursor.execute(query)
 
@@ -460,7 +461,7 @@ def getConn():
 
 
 def loadMainCourseTable(main_courses):
-    logging.info('getConn loadMainCourseTable called')
+    print('getConn loadMainCourseTable called')
     try:
         if isinstance(main_courses, list):
             for mc in main_courses:
@@ -475,22 +476,22 @@ def loadMainCourseTable(main_courses):
                                 squery = "select * from iNeuronData.mastercourse where mastercoursename = %s and subtopicname = %s and subtopicurl = %s"
                                 args = (mc.courseName, st.subTopicName, st.subTopicURL)
                                 cursor.execute(squery, args)
-                                # logging.info('Cursor fetchall', cursor.fetchall())
+                                # print('Cursor fetchall', cursor.fetchall())
 
                                 # Only insert into database if the entry is not there
                                 if len(cursor.fetchall()) == 0:
                                     iquery = "insert into iNeuronData.mastercourse values(%s, %s, %s)"
                                     args = (mc.courseName, st.subTopicName, st.subTopicURL)
-                                    logging.info("Row inserted into mastercourse table", args)
+                                    print("Row inserted into mastercourse table", args)
                                     cursor.execute(iquery, args)
                                     mydb.commit()
     except Exception as e:
-        logging.info('The Exception message is: ', e)
+        print('The Exception message is: ', e)
         return 'Exception occured'
 
 
 def loadSubtopicTable(subTopic):
-    logging.info('loadSubtopicTable method called')
+    print('loadSubtopicTable method called')
     try:
         if isinstance(subTopic, SubTopic):
             if isinstance(subTopic.subTopicCourses, list):
@@ -508,15 +509,15 @@ def loadSubtopicTable(subTopic):
                         if len(cursor.fetchall()) == 0:
                             iquery = "insert into iNeuronData.subtopic values(%s, %s, %s)"
                             cursor.execute(iquery, args)
-                            logging.info("Row inserted into subtopic table", args)
+                            print("Row inserted into subtopic table", args)
                             mydb.commit()
     except Exception as e:
-        logging.info('The Exception message is: ', e)
+        print('The Exception message is: ', e)
         return 'Exception occured'
 
 
 def loadCourseTable(course):
-    logging.info('loadCourseTable method called')
+    print('loadCourseTable method called')
     try:
         if isinstance(course, Course):
             mydb = getConn()
@@ -534,15 +535,15 @@ def loadCourseTable(course):
                     str(course.courseFeatures), str(course.get_courseCurriculumNames()),
                     str(course.get_courseFaculty()))
                 cursor.execute(iquery, iargs)
-                logging.info("Row inserted into course table", iargs)
+                print("Row inserted into course table", iargs)
                 mydb.commit()
     except Exception as e:
-        logging.info('The Exception message is: ', e)
+        print('The Exception message is: ', e)
         return 'Exception occured'
 
 
 def loadCurriculumTable(course):
-    logging.info('loadCurriculumTable method called')
+    print('loadCurriculumTable method called')
     try:
         if isinstance(course, Course):
             if isinstance(course.courseCurriculums, list):
@@ -561,38 +562,38 @@ def loadCurriculumTable(course):
                             iquery = "insert into iNeuronData.curriculum values(%s, %s, %s)"
                             iargs = (course.courseName, curr.name, str(curr.curriculumListDetails))
                             cursor.execute(iquery, iargs)
-                            logging.info("Row inserted into curriculum table", iargs)
+                            print("Row inserted into curriculum table", iargs)
                             mydb.commit()
     except Exception as e:
-        logging.info('The Exception message is: ', e)
+        print('The Exception message is: ', e)
         return 'Exception occured'
 
 
 def loadFacultyTable(faculty):
-    logging.info('loadFacultyTable method called')
+    print('loadFacultyTable method called')
     try:
         if isinstance(faculty, Faculty):
             mydb = getConn()
             cursor = mydb.cursor()
 
             # Check before inserting whethere Faculty is present in the table or not
-            logging.info("Searching for faculty name:", faculty.name)
+            print("Searching for faculty name:", faculty.name)
             squery = "select * from iNeuronData.faculty where coursefacultyname = %s "
             sargs = (faculty.name,)
             cursor.execute(squery, sargs)
 
             # Only insert into database if the entry is not there
             if len(cursor.fetchall()) == 0:
-                logging.info("Going to insert Faculty object: {", faculty.name, ", ", faculty.profile, "}")
+                print("Going to insert Faculty object: {", faculty.name, ", ", faculty.profile, "}")
                 iquery = "insert into iNeuronData.faculty values(%s, %s)"
                 iargs = (faculty.name, faculty.profile)
                 cursor.execute(iquery, iargs)
-                logging.info("Row inserted into faculty table", iargs)
+                print("Row inserted into faculty table", iargs)
                 mydb.commit()
         else:
-            logging.info("Error in parsing Faculty object in loadFacultyTable()")
+            print("Error in parsing Faculty object in loadFacultyTable()")
     except Exception as e:
-        logging.info('The Exception message is: ', e)
+        print('The Exception message is: ', e)
         return 'Exception occured'
 
 
