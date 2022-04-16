@@ -14,6 +14,7 @@ application = Flask(__name__)
 
 logging.basicConfig(filename='appLog.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
+
 # Faculty class
 class Faculty:
     def __init__(self, name, profile):
@@ -364,7 +365,7 @@ def getCourseDetails():
                 "class": "InstructorDetails_mentor__2hmG8 InstructorDetails_card__14MoH InstructorDetails_flex__2ePsQ card flex"})
             for faculty in faculties:
                 f1 = Faculty(faculty.find('h5').text, faculty.find('p').text)
-                logging.info("Faculty details:",f1.printFaculty())
+                logging.info("Faculty details:", f1.printFaculty())
                 logging.info("Going to insert faculty details into Database")
                 loadFacultyTable(f1)
                 course.add_courseFaculties(f1)
@@ -450,11 +451,11 @@ def setupSQLConn():
 
 def getConn():
     # Local
-    mydb = conn.connect(host='localhost', user='root', passwd='MySql@123')
+    # mydb = conn.connect(host='localhost', user='root', passwd='MySql@123')
 
     # AWS
-    # mydb = conn.connect(host='ineurondatabase.caxhx34dldru.us-east-1.rds.amazonaws.com', user='admin',
-    #                    passwd='mysql1234')
+    mydb = conn.connect(host='ineurondatabase.caxhx34dldru.us-east-1.rds.amazonaws.com', user='admin',
+                        passwd='mysql1234')
     return mydb
 
 
