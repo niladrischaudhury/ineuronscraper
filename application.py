@@ -144,7 +144,7 @@ class MainCourse:
 @cross_origin()
 def homePage():
     print("Starting home page")
-    # setupSQLConn()
+    setupSQLConn()
     return render_template("index.html")
 
 
@@ -217,7 +217,7 @@ def getCourses():
 
             # Load data into Database
             print("Going to insert courses into Database")
-            # loadMainCourseTable(main_courses)
+            loadMainCourseTable(main_courses)
 
             return render_template("maincourses.html", mainCourses=main_courses)
         except Exception as e:
@@ -271,7 +271,7 @@ def getSubtopics():
 
             # Load data into Database
             print("Going to insert sub topics into Database")
-            # loadSubtopicTable(st)
+            loadSubtopicTable(st)
 
             return render_template("subtopics.html", subtopic=st)
         except Exception as e:
@@ -378,14 +378,14 @@ def getCourseDetails():
                 f1 = Faculty(faculty.find('h5').text, faculty.find('p').text)
                 print("Faculty details:", f1.printFaculty())
                 print("Going to insert faculty details into Database")
-                # loadFacultyTable(f1)
+                loadFacultyTable(f1)
                 course.add_courseFaculties(f1)
 
             print("Going to insert Curriculum details into Database:", course.printCourse())
-            # loadCurriculumTable(course)
+            loadCurriculumTable(course)
 
             print("Going to insert Course details into Database:", course.printCourse())
-            # loadCourseTable(course)
+            loadCourseTable(course)
 
             return render_template("course.html", course=course)
         except Exception as e:
