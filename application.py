@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS, cross_origin
+from selenium import webdriver
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver import ChromeOptions
@@ -9,6 +10,7 @@ from bs4 import BeautifulSoup as bs
 import time
 import mysql.connector as conn
 import logging
+import os
 
 application = Flask(__name__)
 
@@ -154,9 +156,10 @@ def getCourses():
             iNeuronHome = "https://ineuron.ai"
 
             # Scrape Main Course Items
-            chrome_options = Options()
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
             chrome_options.add_argument("--window-size=1400,800")
-            driver = Chrome(executable_path='chromedriver',
+            driver = Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
                             chrome_options=chrome_options)
             driver.get(iNeuronHome)
             driver.find_element_by_xpath("//li[contains(@id, 'course-dropdown')]//img").click()
@@ -179,7 +182,7 @@ def getCourses():
                 i.printMainCourse()
 
             # Scrape Main Course SubTopic Name and URLs
-            driver = Chrome(executable_path='chromedriver',
+            driver = Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
                             chrome_options=chrome_options)
             driver.get(iNeuronHome)
             time.sleep(5)
@@ -232,9 +235,11 @@ def getSubtopics():
             print("Going to get the details of SubTopic:", st.printSubTopic())
 
             # Scrape Sub Topic Items
-            chrome_options = Options()
+            # chrome_options = Options()
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
             chrome_options.add_argument("--window-size=1400,800")
-            driver = Chrome(executable_path='chromedriver',
+            driver = Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
                             chrome_options=chrome_options)
             driver.get(stURL)
             time.sleep(3)
@@ -282,9 +287,11 @@ def getCourseDetails():
             print("Going to get the details of Course:", course.printCourse())
 
             # Scrape Course Page details
-            chrome_options = Options()
+            # chrome_options = Options()
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
             chrome_options.add_argument("--window-size=1400,800")
-            driver = Chrome(executable_path='chromedriver',
+            driver = Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
                             chrome_options=chrome_options)
             driver.get(course_url)
             time.sleep(5)
