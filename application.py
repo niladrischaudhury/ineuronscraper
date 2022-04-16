@@ -158,6 +158,7 @@ def getCourses():
             # Scrape Main Course Items
             chrome_options = webdriver.ChromeOptions()
             chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+            chrome_options.add_argument("--headless")
             chrome_options.add_argument("--window-size=1400,800")
             driver = Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
                             chrome_options=chrome_options)
@@ -238,6 +239,7 @@ def getSubtopics():
             # chrome_options = Options()
             chrome_options = webdriver.ChromeOptions()
             chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+            chrome_options.add_argument("--headless")
             chrome_options.add_argument("--window-size=1400,800")
             driver = Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
                             chrome_options=chrome_options)
@@ -290,6 +292,7 @@ def getCourseDetails():
             # chrome_options = Options()
             chrome_options = webdriver.ChromeOptions()
             chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+            chrome_options.add_argument("--headless")
             chrome_options.add_argument("--window-size=1400,800")
             driver = Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
                             chrome_options=chrome_options)
