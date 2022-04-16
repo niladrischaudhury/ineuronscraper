@@ -400,12 +400,12 @@ def setupSQLConn():
     cursor.execute("show databases")
     dblist = cursor.fetchall()
     print("Available Databases:", dblist)
-    if (any('ineurondata' in i for i in dblist)):
-        print("ineurondata is present")
-        pass
-    else:
-        print("Creating ineurondata database")
-        cursor.execute("create database iNeuronData")
+    #if (any('ineurondata' in i for i in dblist)):
+    #    print("ineurondata is present")
+    #    pass
+    #else:
+    #    print("Creating ineurondata database")
+    #    cursor.execute("create database iNeuronData")
 
     cursor.execute('use iNeuronData')
     cursor.execute('show tables')
