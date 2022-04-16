@@ -167,7 +167,7 @@ def getCourses():
             driver.get(iNeuronHome)
             driver.find_element_by_xpath("//li[contains(@id, 'course-dropdown')]//img").click()
             driver.find_element_by_xpath("//li[contains(@id, 'course-dropdown')]//img").click()
-            iNeuronHome_html = bs(driver.page_source)
+            iNeuronHome_html = bs(driver.page_source,'html.parser')
             driver.quit()
 
             main_courses = []
@@ -200,7 +200,7 @@ def getCourses():
                 sub_topic_element = driver.find_element_by_link_text(mc.courseName)
                 actions = ActionChains(driver)
                 actions.move_to_element(sub_topic_element).perform()
-                iNeuronHome_html = bs(driver.page_source)
+                iNeuronHome_html = bs(driver.page_source, 'html.parser')
                 sub_topic_no = len(
                     iNeuronHome_html.findAll('div', {'class': 'courses-card-list card flex'})[0].findAll('div', {
                         'id': 'subcategories-list'})[0].findAll('a'))
@@ -257,7 +257,7 @@ def getSubtopics():
                 if new_height == previous_height:
                     break
                 previous_height = new_height
-            sub_topic_html = bs(driver.page_source)
+            sub_topic_html = bs(driver.page_source, 'html.parser')
             driver.quit()
 
             course_num = int(len(sub_topic_html.findAll("h5", {"class": "Course_course-title__2rA2S"})) / 2)
@@ -310,7 +310,7 @@ def getCourseDetails():
                     "//span[contains(@class, 'CurriculumAndProjects_view-more-btn__3ggZL')]").click()
             except NoSuchElementException:
                 pass
-            course_html = bs(driver.page_source)
+            course_html = bs(driver.page_source, 'html.parser')
             driver.quit()
 
             # Set Course Description
