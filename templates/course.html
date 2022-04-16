@@ -31,6 +31,16 @@
             </td>
         </tr>
         <tr>
+            <td><h3>Features</h3></td>
+            <td>
+                <ul>
+                    {% for feature in course['courseFeatures'] %}
+                    <li><label>{{feature}}</label></li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
             <td><h3>Learnings</h3></td>
             <td>
                 <ul>

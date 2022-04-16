@@ -185,7 +185,7 @@ def getCourses():
                 i.printMainCourse()
 
             # Scrape Main Course SubTopic Name and URLs
-            driver = Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
+            driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
                             chrome_options=chrome_options)
             driver.get(iNeuronHome)
             time.sleep(5)
@@ -242,8 +242,10 @@ def getSubtopics():
             chrome_options = webdriver.ChromeOptions()
             chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
             chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--window-size=1400,800")
-            driver = Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
+            driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
                             chrome_options=chrome_options)
             driver.get(stURL)
             time.sleep(3)
@@ -295,8 +297,10 @@ def getCourseDetails():
             chrome_options = webdriver.ChromeOptions()
             chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
             chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--window-size=1400,800")
-            driver = Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
+            driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),
                             chrome_options=chrome_options)
             driver.get(course_url)
             time.sleep(5)
