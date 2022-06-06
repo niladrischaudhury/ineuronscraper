@@ -144,7 +144,7 @@ class MainCourse:
 @cross_origin()
 def homePage():
     print("Starting home page")
-    setupSQLConn()
+    #setupSQLConn()
     return render_template("index.html")
 
 
